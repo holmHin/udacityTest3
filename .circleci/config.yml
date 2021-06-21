@@ -1,5 +1,9 @@
 version: 2.1
 
+defaults: &nodeEnv
+  docker:
+    - image: circleci/node:13.8.0
+
 commands:
   destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
@@ -38,8 +42,7 @@ commands:
             
 jobs:
   build-frontend:
-    docker:
-      - image: circleci/node:13.8.0
+    <<: *nodeEnv
     steps:
       - checkout
       - restore_cache:
@@ -55,8 +58,7 @@ jobs:
           key: frontend-build
 
   build-backend:
-    docker:
-      - image: circleci/node:13.8.0
+    <<: *nodeEnv
     steps:
       - checkout
       - restore_cache:
@@ -71,21 +73,37 @@ jobs:
           paths: [backend/node_modules]
           key: backend-build
 
-  #test-frontend:
-   # docker:
-   #   - image: circleci/node:13.8.0
-    #steps:
-      # Checkout code from git
-      # Restore from cache
-      # Your job code here
+  test-frontend:
+    <<: *nodeEnv
+    steps:
+      - checkout
+      - restore_cache:
+          keys: [ frontend-test ]
+      - run:
+          name: Front-end test
+          command: |
+            cd frontend
+            npm i
+            npm run test
+      - save_cache:
+          paths: [ frontend/node_modules ]
+            key: frontend-test
                 
- # test-backend:
- #   docker:
- #     # Docker image here
- #   steps:
-      # Checkout code from git
-      # Restore from cache
-      # Your job code here
+  test-backend:
+    <<: *nodeEnv
+    steps:
+      - checkout
+      - restore_cache:
+         keys: [ backend-test ]
+      - run:
+          name: Back-end test
+          command: |
+            cd backend
+            npm i
+            npm run test
+      - save_cache:
+          paths: [ backend/node_modules ]
+            key: backend-test
             
  # scan-frontend:
  #   docker:
