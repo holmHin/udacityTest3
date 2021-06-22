@@ -78,51 +78,59 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [ frontend-test ]
+          keys: [ frontend-build ]
       - run:
           name: Front-end test
           command: |
             cd frontend
             npm i
             npm run test
-      - save_cache:
-          paths: [ frontend/node_modules ]
-          key: frontend-test
+#      - save_cache:
+#          paths: [ frontend/node_modules ]
+#          key: frontend-test
                 
   test-backend:
     <<: *nodeEnv
     steps:
       - checkout
       - restore_cache:
-         keys: [ backend-test ]
+         keys: [ backend-build ]
       - run:
-          name: Back-end test
+          name: Backend test
           command: |
             cd backend
             npm i
             npm run test
-      - save_cache:
-            paths: [ backend/node_modules ]
-            key: backend-test
+#      - save_cache:
+#            paths: [ backend/node_modules ]
+#            key: backend-test
             
- # scan-frontend:
- #   docker:
-      # Docker image here
- #   steps:
-      # Checkout code from git
-      # Restore from cache
-      # Your job code here
+  scan-frontend:
+    <<: *nodeEnv
+    steps:
+    - checkout
+    - restore_cache:
+        keys: [ backend-build ]
+    run:
+      name: Frontend scan
+      command: |
+        cd frontend
+        npm audit --audit-level=critical
 
- # scan-backend:
- #   docker:
-      # Docker image here
- #   steps:
-      # Checkout code from git
-      # Restore from cache
-      # Your job code here
+  scan-backend:
+    <<: *nodeEnv
+    steps:
+      - checkout
+      - restore_cache:
+          keys: [ frontend-build ]
+    run:
+      name: Backend scan
+      command: |
+        cd backedn
+        npm audit --audit-level=critical
 
 #  deploy-infrastructure:
-#    docker:
+  #    docker:
 #      # Docker image here that supports AWS CLI
 #    steps:
 #      # Checkout code from git
@@ -296,10 +304,10 @@ workflows:
           requires: [build-frontend]
       - test-backend:
           requires: [build-backend]
-#      - scan-backend:
-#          requires: [build-backend]
-#      - scan-frontend:
-#          requires: [build-frontend]
+      - scan-backend:
+          requires: [build-backend]
+      - scan-frontend:
+          requires: [build-frontend]
 #      - deploy-infrastructure:
 #          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
 #          filters:
