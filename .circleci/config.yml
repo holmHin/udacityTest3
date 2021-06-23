@@ -162,8 +162,8 @@ jobs:
       - run:
           name: Add back-end ip to ansible inventory
           command: |
-            cd .cicleci/ansible
-            curl -H "token: e14ce597-d428-4f67-acb8-27c8e10191ca" --request GET https://api.memstash.io/values/url >> inventory
+            cd .circleci/ansible/
+            curl -H "token: e14ce597-d428-4f67-acb8-27c8e10191ca" --request GET https://api.memstash.io/values/url >> inventory.txt
       - persist_to_workspace:
           root: ~/
           paths:
