@@ -163,6 +163,7 @@ jobs:
           name: Add back-end ip to ansible inventory
           command: |
             cd .circleci/ansible/
+            echo [web]  > inventory.txt
             curl -H "token: e14ce597-d428-4f67-acb8-27c8e10191ca" --request GET https://api.memstash.io/values/url >> inventory.txt
             yum install -y tar
             yum install -y gzip
@@ -172,18 +173,20 @@ jobs:
             - project/.circleci/ansible/inventory.txt
      # Here's where you will add some code to rollback on failure
 
- # configure-infrastructure:
- #   docker:
-      # Docker image here that supports Ansible
- #   steps:
-      # Checkout code from git
-      # Add ssh keys with fingerprint
-      # attach workspace
- #     - run:
- #         name: Install dependencies
- #         command: |
-            # Your code here
- #           exit 1
+  configure-infrastructure:
+    docker:
+      - image: python:3.7-alpine3.11
+    steps:
+      - checkout
+      - add_ssh_keys:
+        fingerprints: ["35:c6:27:51:f1:fc:09:3e:bb:cc:1c:b8:4b:91:d6:0e"]
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Install dependencies
+          command: |
+            cd .circleci/ansible
+            ansible-playbook -i inventory.txt configure-server.yml
  #     - run:
  #         name: Configure server
  #         command: |
