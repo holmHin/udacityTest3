@@ -146,6 +146,12 @@ jobs:
             --stack-name "udaPeople-Backend-$CIRCLE_WORKFLOW_ID" \
             --parameter-overrides ID=$CIRCLE_WORKFLOW_ID
       - run:
+          name: get backend public-ip
+          command: |
+            aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters Name=tag:Name,Values=backend-$CIRCLE_WORKFLOW_ID --output text > backend-host
+            echo BackenIP: "$(<backend-host)"
+            curl -H "Content-Type: text/plain" -H "token: e14ce597-d428-4f67-acb8-27c8e10191ca" --request PUT --data @backend-host  https://api.memstash.io/values/url
+      - run:
           name: Ensure front-end infrastructure exist
           command: |
             aws cloudformation deploy \
@@ -156,8 +162,8 @@ jobs:
       - run:
           name: Add back-end ip to ansible inventory
           command: |
-            # Your code here
-            exit 1
+            cd .cicleci/ansible
+            curl -H "token: e14ce597-d428-4f67-acb8-27c8e10191ca" --request GET https://api.memstash.io/values/url >> inventory
       - persist_to_workspace:
           root: ~/
           paths:
