@@ -186,6 +186,8 @@ jobs:
           name: Install dependencies
           command: |
             cd .circleci/ansible
+            pwd
+            ls -l
             ansible-playbook -i inventory.txt configure-server.yml
  #     - run:
  #         name: Configure server
