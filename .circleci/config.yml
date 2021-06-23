@@ -164,6 +164,7 @@ jobs:
           command: |
             cd .circleci/ansible/
             curl -H "token: e14ce597-d428-4f67-acb8-27c8e10191ca" --request GET https://api.memstash.io/values/url >> inventory.txt
+            yum install -y tar
       - persist_to_workspace:
           root: ~/
           paths:
