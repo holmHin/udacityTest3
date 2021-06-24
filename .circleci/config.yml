@@ -207,12 +207,6 @@ jobs:
           name: Run migrations
           command: |
             cd backend
-            wget database-1.cbzulvnjvuqq.eu-central-1.rds.amazonaws.com
-            echo DB$TYPEORM_DATABASE
-            echo UN$TYPEORM_USERNAME
-            echo HOST$TYPEORM_HOST
-            echo PASS$TYPEORM_PASSWORD
-            echo PORT$TYPEORM_PORT
             npm i
             npm run migrations
 #
