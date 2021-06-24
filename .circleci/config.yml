@@ -213,7 +213,6 @@ jobs:
             echo HOST$TYPEORM_HOST
             echo PASS$TYPEORM_PASSWORD
             echo PORT$TYPEORM_PORT
-            echo p5432
             npm i
             npm run migrations
 #
