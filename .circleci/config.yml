@@ -208,14 +208,18 @@ jobs:
           command: |
             cd backend
             npm i
-            npm run migrations
-#
-#      - run:
-#          name: Send migration results to memstash
-#          command: |
-            # Your code here
-#            exit 1
-      - destroy-environment
+            npm run migrations | tee migrating.txt
+
+      - run:
+          name: Send migration results to memstash
+          command: |
+            if grep -Fxq "Migration AddEmployee1555722583168 has been executed successfully" output.txt;
+            then
+            curl -H "Content-Type: text/plain" -H "token: b994e046-2a53-4a93-80cf-feb669a7ec9b" --request PUT --data "1" https://api.memstash.io/values/;
+            else
+            curl -H "Content-Type: text/plain" -H "token: b994e046-2a53-4a93-80cf-feb669a7ec9b" --request PUT --data "0" https://api.memstash.io/values/;
+            fi
+#      - destroy-environment
 
 #  deploy-frontend:
 #    docker:
