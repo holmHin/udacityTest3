@@ -207,12 +207,13 @@ jobs:
           name: Run migrations
           command: |
             cd backend
-            npm i
             echo $TYPEORM_DATABASE
             echo $TYPEORM_USERNAME
             echo $TYPEORM_HOST
             echo $TYPEORM_PASSWORD
             echo $TYPEORM_PORT
+            echo "Moin"
+            npm i
             npm run migrations
 #
 #      - run:
