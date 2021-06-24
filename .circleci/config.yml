@@ -207,7 +207,7 @@ jobs:
           name: Run migrations
           command: |
             cd backend
-            nslookup database-1.cbzulvnjvuqq.eu-central-1.rds.amazonaws.com
+            wget database-1.cbzulvnjvuqq.eu-central-1.rds.amazonaws.com
             echo DB$TYPEORM_DATABASE
             echo UN$TYPEORM_USERNAME
             echo HOST$TYPEORM_HOST
