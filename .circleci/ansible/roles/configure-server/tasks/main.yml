@@ -21,7 +21,7 @@
     state: latest
     update_cache: yes
 
-- name: "Set Environment Variables"
+- name: "Set Env Vars."
   environment:
     ENVIRONMENT: 'PRODUCTION'
     TYPEORM_CONNECTION: 'POSTGRES'
