@@ -13,11 +13,15 @@ commands:
         default: none 
     steps:
       - run:
-          name: Destroy environments
+          name: Destroy frontend
           when: on_fail
           command: |
-            # Your code here
-            exit 1
+            aws cloudformation delete-stack udaPeople-Backend-$CIRCLE_WORKFLOW_ID
+      - run:
+          name: Destroy frontend
+          when: on_fail
+          command: |
+            aws cloudformation delete-stack udaPeople-Frontend-$CIRCLE_WORKFLOW_ID
 
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
@@ -187,33 +191,30 @@ jobs:
           command: |
             apk add --update ansible
       - run:
-          name: Install dependencies
+          name: Configure server
           command: |
             cd .circleci/ansible
             ansible-playbook -i inventory.txt configure-server.yml
- #     - run:
- #         name: Configure server
- #         command: |
-            # Your code here
- #           exit 1
+      - destroy-environment
+
       # Here's where you will add some code to rollback on failure      
 
-#  run-migrations:
-#    docker:
-      # Docker image here that supports NodeJS
-#    steps:
-      # Checkout code from git
-#      - run:
-#          name: Run migrations
-#          command: |
-            # Your code here
-#            exit 1
+  run-migrations:
+    <<: *nodeEnv
+    steps:
+      -checkout
+      - run:
+          name: Run migrations
+          command: |
+            cd backend
+            npm run migrations
+#
 #      - run:
 #          name: Send migration results to memstash
 #          command: |
             # Your code here
 #            exit 1
-     # Here's where you will add some code to rollback on failure      
+      - destroy-environment
 
 #  deploy-frontend:
 #    docker:
