@@ -216,9 +216,9 @@ jobs:
             cd backend
             if grep -Fxq "Migration AddEmployee1555722583168 has been executed successfully" output.txt;
             then
-            curl -H "Content-Type: text/plain" -H "token: b994e046-2a53-4a93-80cf-feb669a7ec9b" --request PUT --data "1" https://api.memstash.io/values/;
+            curl -H "Content-Type: text/plain" -H "token: b994e046-2a53-4a93-80cf-feb669a7ec9b" --request PUT --data "1" https://api.memstash.io/values/success;
             else
-            curl -H "Content-Type: text/plain" -H "token: b994e046-2a53-4a93-80cf-feb669a7ec9b" --request PUT --data "0" https://api.memstash.io/values/;
+            curl -H "Content-Type: text/plain" -H "token: b994e046-2a53-4a93-80cf-feb669a7ec9b" --request PUT --data "0" https://api.memstash.io/values/success;
             fi
 #      - destroy-environment
 
