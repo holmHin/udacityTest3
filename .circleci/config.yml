@@ -231,6 +231,7 @@ jobs:
            name: Install dependencies
            command: |
              curl -fsSL https://rpm.nodesource.com/setup_lts.x | bash -
+              yum install -y nodejs
       - run:
           name: Get backend url
           command: |
