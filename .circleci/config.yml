@@ -231,7 +231,7 @@ jobs:
            name: Install dependencies
            command: |
              curl -fsSL https://rpm.nodesource.com/setup_lts.x | bash -
-              yum install -y nodejs
+             yum install -y nodejs
       - run:
           name: Get backend url
           command: |
@@ -246,21 +246,26 @@ jobs:
             npm run build
             aws s3 cp ./dist s3://udapeople-$CIRCLE_WORKFLOW_ID/ --recursive
                     
-#  deploy-backend:
-#    docker:
-      # Docker image here that supports Ansible
-#    steps:
-      # Checkout code from git
-      # Add ssh keys with fingerprint
-      # attach workspace
-#      - run:
-#          name: Install dependencies
-#          command: |
-            # your code here
-#      - run:
-#          name: Deploy backend
-#          command: |
-            # your code here
+  deploy-backend:
+    docker:
+      docker:
+        - image: python:3.7-alpine3.11
+    steps:
+      - checkout
+      - add_ssh_keys:
+        fingerprints: ["35:c6:27:51:f1:fc:09:3e:bb:cc:1c:b8:4b:91:d6:0e"]
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Install dependencies
+          command: |
+            ls -l
+            curl -fsSL https://rpm.nodesource.com/setup_lts.x | bash -
+            yum install -y nodejs
+      - run:
+          name: Deploy backend
+          command: |
+            ls -l
       # Here's where you will add some code to rollback on failure  
 
 #  smoke-test:
