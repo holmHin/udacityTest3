@@ -248,12 +248,11 @@ jobs:
                     
   deploy-backend:
     docker:
-      docker:
-        - image: python:3.7-alpine3.11
+      - image: python:3.7-alpine3.11
     steps:
       - checkout
       - add_ssh_keys:
-        fingerprints: ["35:c6:27:51:f1:fc:09:3e:bb:cc:1c:b8:4b:91:d6:0e"]
+          fingerprints: ["35:c6:27:51:f1:fc:09:3e:bb:cc:1c:b8:4b:91:d6:0e"]
       - attach_workspace:
           at: ~/
       - run:
