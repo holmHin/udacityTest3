@@ -258,11 +258,15 @@ jobs:
       - run:
           name: Install dependencies
           command: |
+            cd backend
             apk add --update nodejs nodejs-npm
       - run:
           name: Deploy backend
           command: |
             ls -l
+            cd backend
+            npm i
+            npm run build
       # Here's where you will add some code to rollback on failure  
 
 #  smoke-test:
