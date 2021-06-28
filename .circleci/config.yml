@@ -222,26 +222,26 @@ jobs:
             fi
 #      - destroy-environment
 
-#  deploy-frontend:
-#    docker:
-      # Docker image here that supports AWS CLI
-#    steps:
-      # Checkout code from git
-#      - run:
-#          name: Install dependencies
-#          command: |
-            # your code here
-#      - run:
-#          name: Get backend url
-#          command: |
-            # your code here
-#            export API_URL="http://${BACKEND_IP}:3030"
-#            echo "${API_URL}"
-#      - run:
-#          name: Deploy frontend objects
-#          command: |
-            # your code here
-      # Here's where you will add some code to rollback on failure      
+  deploy-frontend:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run:
+           name: Install dependencies
+           command: |
+            
+      - run:
+          name: Get backend url
+          command: |
+            BACKEND_IP=$(curl -H "token: e14ce597-d428-4f67-acb8-27c8e10191ca" --request GET https://api.memstash.io/values/url)
+            export API_URL="http://${BACKEND_IP}:3030"
+            echo "${API_URL}"
+      - run:
+          name: Deploy frontend objects
+          command: |
+            npm run build
+            aws s3 cp ./dist s3://udapeople-$CIRCLE_WORKFLOW_ID
                     
 #  deploy-backend:
 #    docker:
@@ -338,9 +338,9 @@ workflows:
  #             only: [main]
  #      - configure-infrastructure:
  #         requires: [deploy-infrastructure]
-       - run-migrations
+ #     - run-migrations
  #         requires: [configure-infrastructure]
-#      - deploy-frontend:
+       - deploy-frontend:
 #          requires: [run-migrations]
 #      - deploy-backend:
 #          requires: [run-migrations]
