@@ -230,7 +230,7 @@ jobs:
       - run:
            name: Install dependencies
            command: |
-            
+             npm i
       - run:
           name: Get backend url
           command: |
