@@ -271,12 +271,10 @@ jobs:
             cd backend
             npm i
             npm run build
-            cd ../.circleci/ansible
-            ls -l
-            ansible-playbook -i inventory.txt deploy-backend.yml
+            pwd
+            ansible-playbook -i ../.circleci/ansible/inventory.txt ../.circleci/ansible/deploy-backend.yml
 
-      # Here's where you will add some code to rollback on failure  
-
+      # Here's where you will add some code to rollback on failure
 #  smoke-test:
 #    docker:
       # Lightweight Docker image 
