@@ -265,6 +265,7 @@ jobs:
           command: |
             apk add --update ansible
             apk add --update nodejs nodejs-npm
+            apk add --update rsync
       - run:
           name: Deploy backend
           command: |
