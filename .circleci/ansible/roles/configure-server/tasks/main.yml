@@ -42,5 +42,5 @@
     state: present
 
 - name: "Open Port 80"
-    become: yes
-    shell: "setcap cap_net_bind_service=+ep /usr/local/bin/node"
+  become: yes
+  shell: "setcap cap_net_bind_service=+ep /usr/local/bin/node"
