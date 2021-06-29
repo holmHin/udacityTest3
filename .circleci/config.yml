@@ -275,27 +275,26 @@ jobs:
             ansible-playbook -i ../.circleci/ansible/inventory.txt ../.circleci/ansible/deploy-backend.yml
 
       # Here's where you will add some code to rollback on failure
-#  smoke-test:
-#    docker:
-      # Lightweight Docker image 
-#    steps:
-      # Checkout code from git
-#      - run:
-#          name: Install dependencies
-#          command: |
-            # your code here
-#      - run:
-#          name: Get backend url
-#          command: |
-            # your code here
+   smoke-test:
+     docker:
+      - image: alpine
+     steps:
+      - run:
+        name: Install dependencies
+        command: |
+          ls -l
+      - run:
+          name: Get backend url
+          command: |
+            BACKEND_IP=$(curl -H "token: e14ce597-d428-4f67-acb8-27c8e10191ca" --request GET https://api.memstash.io/values/url)
 #      - run:
 #          name: Backend smoke test.
 #          command: |
-            # your code here
-#      - run:
-#          name: Frontend smoke test.
-#          command: |
-            # your code here
+#            curl https://${BACKEND_IP}:3000/api/status
+      - run:
+          name: Frontend smoke test.
+          command: |
+            URL="http://udapeople-${CIRCLE_WORKFLOW_ID}.s3-website.eu-central-1.amazonaws.com"
       # Here's where you will add some code to rollback on failure  
 
 #  cloudfront-update:
@@ -346,20 +345,20 @@ workflows:
  #         requires: [build-backend]
  #     - scan-frontend:
  #         requires: [build-frontend]
-        - deploy-infrastructure:
-            #requires: [test-frontend, test-backend, scan-frontend, scan-backend]
-            filters:
-              branches:
-                only: [main]
-        - configure-infrastructure:
-            requires: [deploy-infrastructure]
-        - run-migrations:
-            requires: [configure-infrastructure]
-        - deploy-frontend:
-            requires: [run-migrations]
-        - deploy-backend:
-            requires: [run-migrations]
-#      - smoke-test:
+#        - deploy-infrastructure:
+#            #requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+#            filters:
+#              branches:
+#                only: [main]
+#        - configure-infrastructure:
+#            requires: [deploy-infrastructure]
+#        - run-migrations:
+#            requires: [configure-infrastructure]
+#        - deploy-frontend:
+#            requires: [run-migrations]
+#        - deploy-backend:
+#: [run-migrations]
+        - smoke-test
 #          requires: [deploy-backend, deploy-frontend]
 #      - cloudfront-update:
 #          requires: [smoke-test]
