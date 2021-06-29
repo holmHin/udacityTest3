@@ -253,7 +253,7 @@ jobs:
                     
   deploy-backend:
     docker:
-      - image: python:3.9.6-buster
+      - image: python:3.7-alpine3.11
     steps:
       - checkout
       - add_ssh_keys:
@@ -265,14 +265,14 @@ jobs:
           command: |
             apk add --update ansible
             apk add --update nodejs nodejs-npm
-            apk add --update rsync
+            apk add --update zip
       - run:
           name: Deploy backend
           command: |
             cd backend
             npm i
             npm run build
-            ansible --version
+            zip -r build.zip dist/*
             ansible-playbook -i ../.circleci/ansible/inventory.txt ../.circleci/ansible/deploy-backend.yml
 
       # Here's where you will add some code to rollback on failure
