@@ -9,7 +9,7 @@
 - name: "Copy build to server"
   become: true
   unarchive:
-    src: /root/project/build.zip
+    src: /root/project/backend/build.zip
     dest: /opt/udapeople
 
 - name: "Start Application"
