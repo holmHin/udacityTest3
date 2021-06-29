@@ -234,7 +234,6 @@ jobs:
       - run:
            name: Install dependencies
            command: |
-             apk add --update ansible
              curl -fsSL https://rpm.nodesource.com/setup_lts.x | bash -
              yum install -y nodejs
       - run:
@@ -347,19 +346,19 @@ workflows:
  #         requires: [build-backend]
  #     - scan-frontend:
  #         requires: [build-frontend]
-        - deploy-infrastructure:
+#        - deploy-infrastructure:
             #requires: [test-frontend, test-backend, scan-frontend, scan-backend]
-            filters:
-              branches:
-                only: [main]
-        - configure-infrastructure:
-            requires: [deploy-infrastructure]
-        - run-migrations:
-            requires: [configure-infrastructure]
-        - deploy-frontend:
-            requires: [run-migrations]
-        - deploy-backend:
-            requires: [run-migrations]
+#            filters:
+#              branches:
+#                only: [main]
+#        - configure-infrastructure:
+#            requires: [deploy-infrastructure]
+#        - run-migrations:
+#            requires: [configure-infrastructure]
+        - deploy-frontend
+#            requires: [run-migrations]
+#        - deploy-backend:
+#            requires: [run-migrations]
 #      - smoke-test:
 #          requires: [deploy-backend, deploy-frontend]
 #      - cloudfront-update:
