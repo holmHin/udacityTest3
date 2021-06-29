@@ -263,10 +263,10 @@ jobs:
       - run:
           name: Deploy backend
           command: |
-            ls -l
             cd backend
             npm i
             npm run build
+            ls -l
       # Here's where you will add some code to rollback on failure  
 
 #  smoke-test:
