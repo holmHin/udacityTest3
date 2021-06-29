@@ -22,6 +22,7 @@ commands:
           when: on_fail
           command: |
             aws cloudformation delete-stack udaPeople-Frontend-$CIRCLE_WORKFLOW_ID
+            curl --request POST --url https://circleci.com/api/v2/workflow/$CIRCLE_WORKFLOW_ID/cancel --header "Circle-Token: ${CIRCLE_TOKEN}"
 
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
@@ -32,7 +33,7 @@ commands:
     steps:
       - run:
           name: Revert migrations
-          # Add when this will run
+          when: on_fail
           command: |
             # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
             SUCCESS = 1
@@ -249,6 +250,7 @@ jobs:
             npm i
             npm run build
             aws s3 cp ./dist s3://udapeople-$CIRCLE_WORKFLOW_ID/ --recursive
+      - destroy-environment
                     
   deploy-backend:
     docker:
@@ -265,6 +267,7 @@ jobs:
             apk add --update ansible
             apk add --update nodejs nodejs-npm
             apk add --update zip
+            pip3 install awscli
       - run:
           name: Deploy backend
           command: |
@@ -273,16 +276,17 @@ jobs:
             npm run build
             zip -r build.zip dist/*
             ansible-playbook -i ../.circleci/ansible/inventory.txt ../.circleci/ansible/deploy-backend.yml
+      - destroy-environment
 
-      # Here's where you will add some code to rollback on failure
   smoke-test:
      docker:
-      - image: alpine
+      - image: python:3.7-alpine3.11
      steps:
       - run:
           name: Install dependencies
           command: |
             apk add --update curl
+            pip3 install awscli
       - run:
           name: Get backend url
           command: |
@@ -301,7 +305,7 @@ jobs:
             else
             return 0
             fi
-      # Here's where you will add some code to rollback on failure  
+      - destroy-environment
 
 #  cloudfront-update:
 #    docker:
