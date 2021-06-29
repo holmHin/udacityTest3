@@ -40,7 +40,3 @@
     global: yes
     production: yes
     state: present
-
-- name: "Open Port 80"
-  become: yes
-  shell: "setcap cap_net_bind_service=+ep /usr/bin/node"
