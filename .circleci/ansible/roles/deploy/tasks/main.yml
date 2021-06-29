@@ -14,4 +14,4 @@
 
 - name: "Start Application"
   become: true
-  shell: "pm2 start /opt/udapeople/main.js"
+  shell: "pm2 start /opt/udapeople/dist/main.js"
