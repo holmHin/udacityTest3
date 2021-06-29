@@ -1,12 +1,16 @@
 ---
+
+- name: Creates Aplication Root
+  become: true
+  file:
+    path: /opt/udapeople/
+    state: directory
+
 - name: "Copy build to server"
   become: true
-  copy:
-    src: "{{ item }}"
-    dest: /opt/udapeople
-  with_fileglob:
-    - /root/project/backend/dist/*
-
+  synchronize:
+    src: /root/project/backend/dist/*
+    dest: /opt/udapeople/
 
 - name: "Start Application"
   become: true
