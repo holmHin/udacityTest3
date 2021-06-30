@@ -36,8 +36,8 @@ commands:
           name: Revert migrations
           when: on_fail
           command: |
-            SUCCESS=(curl -H "token: b994e046-2a53-4a93-80cf-feb669a7ec9b" --request GET https://api.memstash.io/values/success)
-            if(( $SUCCESS==1 )); 
+            SUCCESS=$(curl -H "token: b994e046-2a53-4a93-80cf-feb669a7ec9b" --request GET https://api.memstash.io/values/success)
+            if(( $SUCCESS==1 ));
             then
                cd root/project/backend
                npm i
