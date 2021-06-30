@@ -319,20 +319,24 @@ jobs:
             fi
       - destroy-environment
 
-#  cloudfront-update:
-#    docker:
-      # Docker image here that supports AWS CLI
-#    steps:
-      # Checkout code from git
-#      - run:
-#          name: Install dependencies
-#          command: |
-            # your code here
-#      - run:
-#          name: Update cloudfront distribution
-#          command: |
-            # your code here
-      # Here's where you will add some code to rollback on failure  
+  cloudfront-update:
+    docker:
+    - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            pwd
+      - run:
+          name: Update cloudfront distribution
+          command: |
+            aws cloudformation update \
+            --template-file .circleci/files/cloudfront.yml \
+            --tags project=hhUdaPeopleBE \
+            --stack-name "udaPeople" \
+            --parameter-overrides WorkflowID=$CIRCLE_WORKFLOW_ID
+      - destroy-environment
 
 #cleanup:
 #    docker:
