@@ -13,6 +13,7 @@ commands:
         default: none 
     steps:
       - run:
+      - revert-migrations
           name: Destroy backend
           when: on_fail
           command: |
@@ -35,14 +36,12 @@ commands:
           name: Revert migrations
           when: on_fail
           command: |
-            # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
-            SUCCESS = 1
+            SUCCESS=(curl -H "token: b994e046-2a53-4a93-80cf-feb669a7ec9b" --request GET https://api.memstash.io/values/success)
             if(( $SUCCESS==1 )); 
             then
-            #  cd ~/project/backend
-            #  npm install
-            #  Add revert code here. You can find this in the Getting Started section.
-              exit 1
+               cd root/project/backend
+               npm i
+               npm run migrations:revert
             fi
             
 jobs:
@@ -180,7 +179,7 @@ jobs:
           root: ~/
           paths:
             - project/.circleci/ansible/inventory.txt
-     # Here's where you will add some code to rollback on failure
+      - destroy-environment
 
   configure-infrastructure:
     docker:
@@ -200,9 +199,14 @@ jobs:
           command: |
             cd .circleci/ansible
             ansible-playbook -i inventory.txt configure-server.yml
+      - run:
+          name: Prepare Rollback
+          when: on_fail
+          command: |
+            pip3 install awscli
       - destroy-environment
 
-      # Here's where you will add some code to rollback on failure      
+
 
   run-migrations:
     <<: *nodeEnv
@@ -251,6 +255,7 @@ jobs:
             npm run build
             aws s3 cp ./dist s3://udapeople-$CIRCLE_WORKFLOW_ID/ --recursive
       - destroy-environment
+
                     
   deploy-backend:
     docker:
@@ -267,7 +272,6 @@ jobs:
             apk add --update ansible
             apk add --update nodejs nodejs-npm
             apk add --update zip
-            pip3 install awscli
       - run:
           name: Deploy backend
           command: |
@@ -276,12 +280,20 @@ jobs:
             npm run build
             zip -r build.zip dist/*
             ansible-playbook -i ../.circleci/ansible/inventory.txt ../.circleci/ansible/deploy-backend.yml
+      - run:
+          name: Prepare Rollback
+          when: on_fail
+          command: |
+            pip3 install awscli
       - destroy-environment
+
+
 
   smoke-test:
      docker:
       - image: python:3.7-alpine3.11
      steps:
+      - checkout
       - run:
           name: Install dependencies
           command: |
