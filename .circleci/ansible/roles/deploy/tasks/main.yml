@@ -12,6 +12,11 @@
     src: /root/project/backend.zip
     dest: /opt/udapeople
 
+- name: "Make Application Root Readable"
+  become: true
+  shell: |
+    chmod -R 777 /opt/udapeople
+
 - name: "Build from sources"
   become: true
   shell: |
@@ -26,11 +31,8 @@
 - name: "Start Application"
   become: true
   shell: |
-    chmod -R 777 /opt/udapeople
     cd /opt/udapeople/backend/dist/
     /usr/local/bin/pm2 start main.js --update-env --name BackendAPP
-
-
 
   environment:
     ENVIRONMENT: 'PRODUCTION'
