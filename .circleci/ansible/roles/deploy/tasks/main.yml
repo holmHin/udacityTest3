@@ -12,11 +12,18 @@
     src: /root/project/backend.zip
     dest: /opt/udapeople
 
+- name: "Build from sources"
+  become: true
+  shell: |
+    cd /opt/udapeople/backend
+    npm i
+    npm run build
+
 - name: "Start Application"
   become: true
   shell: |
     chmod -R 777 /opt/udapeople
-    cd /opt/udapeople/dist/
+    cd /opt/udapeople/backend/dist/
     pm2 start main.js
 
   environment:

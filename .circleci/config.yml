@@ -274,22 +274,21 @@ jobs:
             apk add --update nodejs nodejs-npm
             apk add --update tar gzip
 
+ #     - run:
+ #         name: Build Backend
+ #         command: |
+ #           cd backend
+ #           npm i
+ #           npm run build
       - run:
-          name: Build Backend
+          name: zip sources
           command: |
-            cd backend
-            npm i
-            npm run build
-      - run:
-          name: zip build
-          command: |
-
             tar czf backend.zip backend/*
       - run:
             name: deploy backend
             working_directory: ./.circleci/ansible
             command: |
-              ansible-playbook -i inventory.txt deploy-backend.yml -v
+              ansible-playbook -i inventory.txt deploy-backend.yml -vv
       - run:
           name: Prepare Rollback
           when: on_fail
