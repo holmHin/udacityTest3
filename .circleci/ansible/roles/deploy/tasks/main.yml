@@ -17,14 +17,20 @@
   shell: |
     cd /opt/udapeople/backend
     npm i
+    npm i pm2 -g
+    npm i npm@latest -g
+    npm i webpack-dev-server -g
     npm run build
+
 
 - name: "Start Application"
   become: true
   shell: |
     chmod -R 777 /opt/udapeople
     cd /opt/udapeople/backend/dist/
-    pm2 start main.js --update-env
+    /usr/local/bin/pm2 start main.js --update-env --name BackendAPP
+
+
 
   environment:
     ENVIRONMENT: 'PRODUCTION'
