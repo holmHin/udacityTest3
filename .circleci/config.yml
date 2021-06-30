@@ -304,10 +304,10 @@ jobs:
           name: Get backend url
           command: |
             BACKEND_IP=$(curl -H "token: e14ce597-d428-4f67-acb8-27c8e10191ca" --request GET https://api.memstash.io/values/url)
-      - run:
-          name: Backend smoke test.
-          command: |
-            curl https://${BACKEND_IP}:3000/api/status
+ #     - run:
+ #         name: Backend smoke test.
+ #         command: |
+ #           curl https://${BACKEND_IP}:3000/api/status
       - run:
           name: Frontend smoke test.
           command: |
@@ -376,23 +376,23 @@ workflows:
  #         requires: [build-backend]
  #     - scan-frontend:
  #         requires: [build-frontend]
-#        - deploy-infrastructure:
+         - deploy-infrastructure:
 #            #requires: [test-frontend, test-backend, scan-frontend, scan-backend]
-#            filters:
-#              branches:
-#                only: [main]
-#        - configure-infrastructure:
-#            requires: [deploy-infrastructure]
-#        - run-migrations:
-#            requires: [configure-infrastructure]
-#        - deploy-frontend:
-#            requires: [run-migrations]
-#        - deploy-backend:
-#: [run-migrations]
+             filters:
+               branches:
+                 only: [main]
+         - configure-infrastructure:
+             requires: [deploy-infrastructure]
+         - run-migrations:
+             requires: [configure-infrastructure]
+         - deploy-frontend:
+             requires: [run-migrations]:
+         - deploy-backend:
+            [run-migrations]
         - smoke-test
-#          requires: [deploy-backend, deploy-frontend]
-#      - cloudfront-update:
-#          requires: [smoke-test]
-#      - cleanup:
-#          requires: [cloudfront-update]
+           requires: [deploy-backend, deploy-frontend]
+       - cloudfront-update:
+           requires: [smoke-test]
+       - cleanup:
+           requires: [cloudfront-update]
 #
