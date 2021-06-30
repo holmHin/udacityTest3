@@ -279,7 +279,7 @@ jobs:
             cd backend
             npm i
             npm run build
-            zip -r build.zip dist/*
+            zip -r backend.zip ../backend/*
             ansible-playbook -i ../.circleci/ansible/inventory.txt ../.circleci/ansible/deploy-backend.yml
       - run:
           name: Prepare Rollback

@@ -9,12 +9,16 @@
 - name: "Copy build to server"
   become: true
   unarchive:
-    src: /root/project/backend/build.zip
+    src: /root/project/backend.zip
     dest: /opt/udapeople
 
 - name: "Start Application"
   become: true
-  shell: "pm2 start /opt/udapeople/dist/main.js"
+  shell: |
+    chmod -R 777 /opt/udapeople
+    cd /opt/udapeople/dist/
+    pm2 start main.js
+
   environment:
     ENVIRONMENT: 'PRODUCTION'
     TYPEORM_CONNECTION: 'POSTGRES'
