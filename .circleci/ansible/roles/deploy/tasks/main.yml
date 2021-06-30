@@ -24,7 +24,7 @@
   shell: |
     chmod -R 777 /opt/udapeople
     cd /opt/udapeople/backend/dist/
-    pm2 start main.js
+    pm2 start main.js --update-env
 
   environment:
     ENVIRONMENT: 'PRODUCTION'

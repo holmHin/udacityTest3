@@ -288,7 +288,7 @@ jobs:
             name: deploy backend
             working_directory: ./.circleci/ansible
             command: |
-              ansible-playbook -i inventory.txt deploy-backend.yml -vv
+              ansible-playbook -i inventory.txt deploy-backend.yml
       - run:
           name: Prepare Rollback
           when: on_fail
@@ -390,7 +390,7 @@ workflows:
  #                only: [main]
  #        - configure-infrastructure:
  #            requires: [deploy-infrastructure]
- #        - run-migrations:
+         - run-migrations
  #            requires: [configure-infrastructure]
  #        - deploy-frontend:
  #            requires: [run-migrations]
