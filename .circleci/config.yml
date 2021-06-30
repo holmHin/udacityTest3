@@ -272,19 +272,19 @@ jobs:
           command: |
             apk add --update ansible
             apk add --update nodejs nodejs-npm
-            apk add --update zip
-      - run:
-          name: zip build
-          command: |
-            cd backend
-            zip -r backend.zip backend/*
+            apk add --update tar gzip
+
       - run:
           name: Build Backend
           command: |
             cd backend
             npm i
             npm run build
+      - run:
+          name: zip build
+          command: |
 
+            tar czf backend.zip backend/*
       - run:
             name: deploy backend
             working_directory: ./.circleci/ansible
