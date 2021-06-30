@@ -12,8 +12,8 @@ commands:
         type: string
         default: none 
     steps:
-      - run:
       - revert-migrations
+      - run:
           name: Destroy backend
           when: on_fail
           command: |
