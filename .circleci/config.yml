@@ -274,12 +274,12 @@ jobs:
             apk add --update nodejs nodejs-npm
             apk add --update tar gzip
 
- #     - run:
- #         name: Build Backend
- #         command: |
- #           cd backend
- #           npm i
- #           npm run build
+      - run:
+          name: Build Backend
+          command: |
+            cd backend
+            npm i
+            npm run build
       - run:
           name: zip sources
           command: |
