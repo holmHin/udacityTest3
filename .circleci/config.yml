@@ -251,6 +251,8 @@ jobs:
       - run:
           name: Deploy frontend objects
           command: |
+            BACKEND_IP=$(curl -H "token: e14ce597-d428-4f67-acb8-27c8e10191ca" --request GET https://api.memstash.io/values/url)
+            export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
             cd frontend
             npm i
