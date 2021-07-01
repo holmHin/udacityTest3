@@ -315,7 +315,7 @@ jobs:
       - run:
           name: Backend smoke test.
           command: |
-            curl https://${BACKEND_IP}:3030/api/status
+            curl https://$BACKEND_IP:3030/api/status
       - run:
           name: Frontend smoke test.
           command: |
