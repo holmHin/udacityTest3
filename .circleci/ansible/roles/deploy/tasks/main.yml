@@ -35,7 +35,7 @@
 
   environment:
     ENVIRONMENT: 'PRODUCTION'
-    TYPEORM_CONNECTION: 'POSTGRES'
+    TYPEORM_CONNECTION: 'postgres'
     TYPEORM_ENTITIES: './src/modules/domain/**/*.entity.ts'
     TYPEORM_HOST: "{{lookup('env', 'TYPEORM_HOST')}}"
     TYPEORM_PORT: 5532
