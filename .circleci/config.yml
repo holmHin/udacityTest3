@@ -367,27 +367,27 @@ jobs:
             if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
             then
               echo ${OldWorkflowID}
-              aws cloudformation delete-stack udaPeople-Frontend-$OldWorkflowID
+              aws cloudformation delete-stack --stack-name udaPeople-Frontend-$OldWorkflowID
               aws s3 rm s3://udapeople-$OldWorkflowID --recursive -f
-              aws cloudformation delete-stack udaPeople-Backend-$OldWorkflowID
+              aws cloudformation delete-stack --stack-name udaPeople-Backend-$OldWorkflowID
             fi
             
 
 workflows:
   default:
     jobs:
- #     - build-frontend
- #     - build-backend
- #     - test-frontend:
- #         requires: [build-frontend]
- #     - test-backend:
- #         requires: [build-backend]
- #     - scan-backend:
- #         requires: [build-backend]
- #     - scan-frontend:
- #         requires: [build-frontend]
+      - build-frontend
+      - build-backend
+      - test-frontend:
+          requires: [build-frontend]
+      - test-backend:
+          requires: [build-backend]
+      - scan-backend:
+          requires: [build-backend]
+      - scan-frontend:
+          requires: [build-frontend]
          - deploy-infrastructure:
- #           #requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+            #requires: [test-frontend, test-backend, scan-frontend, scan-backend]
              filters:
                branches:
                  only: [main]
