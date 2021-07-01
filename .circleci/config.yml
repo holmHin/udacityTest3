@@ -251,6 +251,7 @@ jobs:
       - run:
           name: Deploy frontend objects
           command: |
+            echo "${API_URL}"
             cd frontend
             npm i
             npm run build
