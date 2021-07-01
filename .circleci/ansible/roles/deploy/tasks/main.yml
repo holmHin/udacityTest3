@@ -31,7 +31,8 @@
 - name: "Start Application"
   shell: |
     cd /opt/udapeople/backend/dist/
-    /usr/local/bin/pm2 start main.js --update-env --name BackendAPP
+ #   /usr/local/bin/pm2 start main.js --update-env --name BackendAPP
+    pm2 start npm --name BackendAPP -- start
 
   environment:
     ENVIRONMENT: 'PRODUCTION'
