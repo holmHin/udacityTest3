@@ -29,7 +29,6 @@
 
 
 - name: "Start Application"
-  become: true
   shell: |
     cd /opt/udapeople/backend/dist/
     /usr/local/bin/pm2 start main.js --update-env --name BackendAPP
