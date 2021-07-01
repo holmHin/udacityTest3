@@ -17,9 +17,15 @@
 - name: "install dependencies."
   become: yes
   apt:
-    name: ["nodejs", "npm", "unzip"]
+    name: ["unzip"]
     state: latest
     update_cache: yes
+    
+- name: "Install Node JS"
+  become: yes
+  shell: |
+    curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -
+    sudo apt-get install -y nodejs
 
 - name: "Set Env Vars."
   shell: "echo $TYPEORM_DATABASE"
